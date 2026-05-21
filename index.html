@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống quản lý phòng Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== FOOTER VLU ===== */
+        .footer-vlu {
+            background: #0b3c6d;
+            color: #ffffff;
+            padding: 20px 40px;
+            margin-top: 10px;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-left,
+        .footer-right {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .footer-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 6px;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #d6e4f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eef1f5;
+            color: #1f1f1f;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== LOGIN ===== */
+        .login-screen {
+            min-height: 100vh;
+            background: #eef1f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 760px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+        }
+
+        .login-left,
+        .login-right {
+            padding: 32px 28px;
+        }
+
+        .login-left {
+            background: #ffffff;
+        }
+
+        .login-right {
+            background: #f7f8fa;
+            border-left: 1px solid #ececec;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-logo {
+            height: 58px;
+            width: auto;
+            margin-bottom: 18px;
+        }
+
+        .login-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 14px 14px;
+            border: 1px solid #d7dbe0;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .email-input:focus {
+            border-color: #b40018;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px 14px;
+            border: none;
+            border-radius: 10px;
+            background: #b40018;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-note {
+            margin-top: 14px;
+            color: #d7263d;
+            font-size: 13px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .error-text {
+            margin-top: 10px;
+            color: #d80027;
+            font-size: 13px;
+            min-height: 18px;
+        }
+
+        .right-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #222;
+            text-align: center;
+        }
+
+        .ms-btn {
+            width: 100%;
+            max-width: 250px;
+            padding: 13px 16px;
+            border: 1px solid #d8d8d8;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #222;
+        }
+
+        .ms-logo {
+            width: 22px;
+            height: 22px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+        }
+
+        .ms-logo span:nth-child(1) { background: #f25022; }
+        .ms-logo span:nth-child(2) { background: #7fba00; }
+        .ms-logo span:nth-child(3) { background: #00a4ef; }
+        .ms-logo span:nth-child(4) { background: #ffb900; }
+
+        /* ===== APP ===== */
+        .app-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #eef1f5;
+        }
+
+        .topbar {
+            height: 78px;
+            background: #ffffff;
+            border-bottom: 1px solid #dddddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .menu-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: #b40018;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .topbar-logo {
+            height: 54px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .system-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0b3c6d;
+            text-align: center;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: none;
+            color: #b40018;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .user-wrap {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #eceff3;
+            color: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            border: 1px solid #d7dce2;
+            cursor: pointer;
+        }
+
+        .user-menu {
+            position: absolute;
+            right: 0;
+            top: 52px;
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            padding: 12px 14px;
+            min-width: 260px;
+            display: none;
+            z-index: 1100;
+        }
+
+        .user-menu.show {
+            display: block;
+        }
+
+        .user-email {
+            font-size: 13px;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .body-shell {
+            display: flex;
+            min-height: calc(100vh - 78px);
+            position: relative;
+        }
+
+        .sidebar {
+            width: 190px;
+            background: #ffffff;
+            border-right: 1px solid #e6e6e6;
+            padding: 14px 8px 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .sidebar.hidden-sidebar {
+            transform: translateX(-100%);
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .tool-item {
+            width: 100%;
+            padding: 10px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ececec;
+            border-radius: 10px;
+            background: #fff;
+            color: #2c3e50;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tool-item:hover {
+            background: #f8f8f8;
+        }
+
+        .tool-item.active {
+            background: #f31825;
+            color: #fff;
+            border-color: #f31825;
+        }
+
+        .sidebar-divider {
+            margin: 14px 4px 16px;
+            border-top: 1px solid #dcdcdc;
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            padding: 12px 14px 10px;
+            transition: all 0.25s ease;
+            background: #eef1f5;
+            overflow-x: hidden;
+        }
+
+        .section-box {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+            display: none;
+        }
+
+        .section-box.active {
+            display: block;
+        }
+
+        .dashboard-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .lab-filter-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fb;
+            border: 1px solid #e3e6ea;
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+
+        .lab-filter-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #56667a;
+            white-space: nowrap;
+        }
+
+        .lab-select {
+            padding: 11px 13px;
+            border: 1px solid #d4dae0;
+            border-radius: 12px;
+            font-size: 14px;
+            min-width: 220px;
+            background: white;
+            outline: none;
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            background: white;
+        }
+
+        .calendar-embed-wrap {
+            width: 100%;
+            height: calc(100vh - 120px);
+            min-height: 600px;
+            max-height: nonepx;
+            overflow: hidden;
+            border-radius: 14px;
+            background: #fff;
+            position: relative;
+            margin-top: 12px;
+        }
+
+        .calendar-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: none;
+            transform-origin: top left;
+            border: none;
+            border-radius: 14px;
+        }
+
+        .placeholder-card {
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            border-radius: 14px;
+            padding: 24px;
+            line-height: 1.7;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .log-table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f7f7f7;
+            font-weight: 700;
+        }
+
+        .calendar-note {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .loading-wrap {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 24px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #b40018;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 35px;
+            color: white;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        @media (max-width: 1200px) {
+            .calendar-embed-wrap {
+                height: calc(100vh - 205px);
+                min-height: 500px;
+                max-height: 610px;
+            }
+
+            .calendar-frame {
+                width: 145%;
+                height: 920px;
+                transform: scale(0.69);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .login-card {
+                grid-template-columns: 1fr;
+            }
+
+            .login-right {
+                border-left: none;
+                border-top: 1px solid #ececec;
+            }
+
+            .system-title {
+                font-size: 15px;
+                white-space: normal;
+            }
+
+            .topbar-logo {
+                height: 44px;
+            }
+
+            .lab-filter-wrap {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .lab-select {
+                min-width: 170px;
+            }
+
+            .calendar-embed-wrap {
+                height: calc(100vh - 220px);
+                min-height: 430px;
+                max-height: 520px;
+            }
+
+            .calendar-frame {
+                width: 168%;
+                height: 900px;
+                transform: scale(0.595);
+            }
+
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 60;
+            }
+        }
+.lab-filter-wrap {
+    display: none;
+}
+.section-box {
+    padding-bottom: 5px !important;
+}
+    </style>
+</head>
+<body>
+    <div id="screen-login" class="login-screen">
+        <div class="login-card">
+            <div class="login-left">
+                <img src="/static/logo_vlu_new.png" class="login-logo" alt="Van Lang Logo">
+
+                <label class="login-label" for="email">Email trường</label>
+                <input
+                    id="email"
+                    class="email-input"
+                    type="email"
+                    placeholder="Nhập email Microsoft 365 của bạn"
+                >
+
+                <button class="login-btn" onclick="handleLogin()">Log in</button>
+                <div id="error-text" class="error-text"></div>
+
+                <div class="login-note">
+                    Lưu ý: người dùng cần tắt chức năng dịch tự động của trình duyệt.
+                </div>
+            </div>
+
+            <div class="login-right">
+                <div class="right-title">Đăng nhập bằng Microsoft 365</div>
+                <button class="ms-btn" type="button">
+                    <div class="ms-logo" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                    <span>Microsoft 365</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-dashboard" class="app-shell hidden">
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+                <img src="/static/logo_vlu_new.png" class="topbar-logo" alt="Van Lang Logo">
+
+                <div style="flex:1; display:flex; justify-content:center;">
+                    <div class="system-title">HỆ THỐNG QUẢN LÝ PHÒNG LAB</div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="logout-btn" onclick="logout()">Log out</button>
+
+                <div class="user-wrap">
+                    <div class="user-avatar" id="current-user-avatar" onclick="toggleUserMenu()">U</div>
+                    <div class="user-menu" id="user-menu">
+                        <div class="user-email" id="current-user-email">user@vanlanguni.vn</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="body-shell">
+            <aside class="sidebar" id="sidebar">
+                <button class="tool-item active" id="btn-home" onclick="showSection('home')">Trang chủ</button>
+                <button class="tool-item" id="btn-clean" onclick="showSection('clean')">Báo cáo vệ sinh</button>
+                <button class="tool-item" id="btn-performance" onclick="showSection('performance')">Báo cáo hiệu suất</button>
+
+                <div class="sidebar-divider"></div>
+
+                <button class="tool-item" id="btn-history" onclick="showSection('history'); loadVisitLogs();">Lịch sử truy cập</button>
+            </aside>
+
+            <main class="content">
+                <section class="section-box active" id="section-home">
+                    <div class="dashboard-head">
+                        <div class="dashboard-title">Trang chủ</div>
+
+                        <div class="lab-filter-wrap">
+                            <div class="lab-filter-label">PHÒNG LAB:</div>
+                            <select id="labSelect" class="lab-select">
+                                <option value="all">Tất cả</option>
+                                <option value="lab1">Lab 1 (CS2.1.1)</option>
+                                <option value="lab2">Lab 2 (CS2.1.4)</option>
+                                <option value="lab3">Lab 3 (CS2.1.5)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calendar-embed-wrap">
+                        <iframe id="calendarFrame" class="calendar-frame"></iframe>
+                    </div>
+
+                                    </section>
+
+                <section class="section-box" id="section-clean">
+                    <div class="dashboard-head">
+                        <div class="dashboard-title">Báo cáo vệ sinh</div>
+                    </div>
+
+                    <div id="cleaning-report-container" style="padding: 15px; background: #fff; border-radius: 12px; border: 1px solid #eee;">
+                        <div id="breadcrumb-container" style="margin-bottom: 15px; padding: 10px 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; font-weight: 600; font-size: 14px; color: #1a73e8; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        </div>
+
+                        <div id="folder-display-area" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                        </div>
+
+                        <div id="photo-display-area" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-box" id="section-performance">
+                    <div class="dashboard-head">
+                        <div class="dashboard-title">Báo cáo hiệu suất</div>
+                    </div>
+                    <div class="placeholder-card">
+                        Chức năng báo cáo hiệu suất đang ở dạng khung giao diện.
+                        <br>• Có thể tích hợp Power BI sau
+                        <br>• Có thể thống kê số lượt sử dụng phòng
+                        <br>• Có thể phân tích thời gian sử dụng theo ngày / tuần / tháng
+                    </div>
+                </section>
+
+                <section class="section-box" id="section-history">
+                    <div class="dashboard-head">
+                        <div class="dashboard-title">Lịch sử truy cập hệ thống</div>
+                    </div>
+
+                    <div class="placeholder-card" style="margin-bottom: 18px;">
+                        Dữ liệu dưới đây ghi nhận những tài khoản đã truy cập vào hệ thống kèm thời gian đăng nhập.
+                    </div>
+
+                    <div class="log-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Email</th>
+                                    <th>Thời gian truy cập</th>
+                                </tr>
+                            </thead>
+                            <tbody id="visit-log-body">
+                                <tr>
+                                    <td colspan="3">Chưa có dữ liệu truy cập.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUGx0_JDrTLcqxGzRpGfkCE5__BpA1pWYGiMb2OBsMP1IAzkouBfiDZXQpx5fDw9Pv/exec";
+        const ID_THU_MUC_GOC = "1PMcmkRuwA2Go4Jmqy3LulcvTfXMmgCjY";
+
+        const allowedEmails = [
+            "y.2275106050559@vanlanguni.vn",
+            "vy.2275106050556@vanlanguni.vn",
+            "nhu.2375106052584@vanlanguni.vn",
+            "thu.2475106050264@vanlanguni.vn",
+            "my.2475106050141@vanlanguni.vn"
+        ];
+
+        const CALENDARS = {
+            all: "daf632530bd28d986338ed98696b0a949b3169f3b8bd7e8a37604e61e860460d@group.calendar.google.com",
+            lab1: "daf632530bd28d986338ed98696b0a949b3169f3b8bd7e8a37604e61e860460d@group.calendar.google.com",
+            lab2: "daf632530bd28d986338ed98696b0a949b3169f3b8bd7e8a37604e61e860460d@group.calendar.google.com",
+            lab3: "daf632530bd28d986338ed98696b0a949b3169f3b8bd7e8a37604e61e860460d@group.calendar.google.com"
+        };
+
+        let currentFolderStack = [];
+        let currentFolderLevel = 0;
+
+        function openImageModal(src) {
+            const modal = document.getElementById("imageModal");
+            const img = document.getElementById("modalImg");
+
+            img.src = src;
+            modal.style.display = "flex";
+        }
+
+        function closeImageModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        function getCalendarEmbedUrl(calendarId) {
+            const params = new URLSearchParams({
+                src: calendarId,
+                ctz: "Asia/Ho_Chi_Minh",
+                hl: "vi",
+                mode: "MONTH",
+                showTitle: "0",
+                showPrint: "0",
+                showTabs: "0",
+                showCalendars: "0",
+                showTz: "0",
+                wkst: "1",
+                bgcolor: "#ffffff",
+                color: "#2952A3"
+            });
+
+            return `https://calendar.google.com/calendar/embed?${params.toString()}`;
+        }
+
+        function loadCalendarByLab(labKey = "all") {
+            const calendarId = CALENDARS[labKey] || CALENDARS.all;
+            document.getElementById("calendarFrame").src = getCalendarEmbedUrl(calendarId);
+        }
+
+        function hideAllScreens() {
+            document.getElementById("screen-login").classList.add("hidden");
+            document.getElementById("screen-dashboard").classList.add("hidden");
+        }
+
+        function getUserInitial(email) {
+            if (!email) return "U";
+            const firstPart = email.split("@")[0].trim();
+            if (!firstPart) return "U";
+            return firstPart.charAt(0).toUpperCase();
+        }
+
+        async function saveVisitLog(email) {
+            try {
+                await fetch("/log-visit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+            } catch (error) {
+                console.log("Không lưu được log:", error);
+            }
+        }
+
+        async function loadVisitLogs() {
+            try {
+                const response = await fetch("/get-logs");
+                const logs = await response.json();
+                const tbody = document.getElementById("visit-log-body");
+
+                if (!logs.length) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3">Chưa có dữ liệu truy cập.</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = logs.map((item, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.email}</td>
+                        <td>${item.time}</td>
+                    </tr>
+                `).join("");
+            } catch (error) {
+                console.log("Không tải được log:", error);
+            }
+        }
+
+        async function handleLogin() {
+            const emailInput = document.getElementById("email");
+            const email = emailInput.value.trim().toLowerCase();
+
+            if (!email) {
+                document.getElementById("error-text").innerText =
+                    "Vui lòng nhập email để đăng nhập.";
+                return;
+            }
+
+            if (!allowedEmails.includes(email)) {
+                document.getElementById("error-text").innerText =
+                    "Tài khoản này không có quyền truy cập hệ thống.";
+                return;
+            }
+
+            sessionStorage.setItem("lab_user_email", email);
+            await saveVisitLog(email);
+            openDashboard(email);
+        }
+
+        function openDashboard(email) {
+            hideAllScreens();
+            document.getElementById("screen-dashboard").classList.remove("hidden");
+            document.getElementById("current-user-avatar").innerText = getUserInitial(email);
+            document.getElementById("current-user-email").innerText = email;
+            document.getElementById("user-menu").classList.remove("show");
+            showSection("home");
+            document.getElementById("labSelect").value = "all";
+            loadCalendarByLab("all");
+        }
+
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("hidden-sidebar");
+        }
+
+        function toggleUserMenu() {
+            document.getElementById("user-menu").classList.toggle("show");
+        }
+
+        function setActiveButton(buttonId) {
+            const buttons = document.querySelectorAll(".tool-item");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            const current = document.getElementById(buttonId);
+            if (current) current.classList.add("active");
+        }
+
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll(".section-box");
+            sections.forEach(section => section.classList.remove("active"));
+
+            const targetSection = document.getElementById("section-" + sectionName);
+            if (targetSection) {
+                targetSection.classList.add("active");
+            }
+
+            if (sectionName === "home") setActiveButton("btn-home");
+            if (sectionName === "clean") {
+                setActiveButton("btn-clean");
+                loadRootFoldersEnhanced();
+            }
+            if (sectionName === "performance") setActiveButton("btn-performance");
+            if (sectionName === "history") setActiveButton("btn-history");
+        }
+
+        function logout() {
+            sessionStorage.removeItem("lab_user_email");
+            hideAllScreens();
+            document.getElementById("screen-login").classList.remove("hidden");
+            document.getElementById("email").value = "";
+            document.getElementById("error-text").innerText = "";
+            document.getElementById("user-menu").classList.remove("show");
+        }
+
+        window.onclick = function(event) {
+            const userMenu = document.getElementById("user-menu");
+            const avatar = document.getElementById("current-user-avatar");
+
+            if (userMenu && avatar && !avatar.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.remove("show");
+            }
+        };
+
+        function safeGetJson(url) {
+            return fetch(url, { method: "GET" })
+                .then(async (res) => {
+                    const text = await res.text();
+
+                    if (!res.ok) {
+                        console.error("HTTP lỗi:", res.status, text);
+                        throw new Error("HTTP " + res.status);
+                    }
+
+                    try {
+                        const data = JSON.parse(text);
+
+                        if (data && Array.isArray(data.data)) return data.data;
+                        if (Array.isArray(data)) return data;
+                        if (data && typeof data === "object") return data;
+
+                        throw new Error("JSON không đúng định dạng.");
+                    } catch (e) {
+                        console.error("JSON parse lỗi. Nội dung trả về:", text);
+                        throw new Error("Dữ liệu trả về không phải JSON hợp lệ.");
+                    }
+                });
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function getDriveItemName(item) {
+            if (!item) return "Không có tên";
+            if (typeof item === "string") return item;
+
+            if (typeof item === "object") {
+                return (
+                    item.ten ||
+                    item.name ||
+                    item.title ||
+                    item.folderName ||
+                    item.fileName ||
+                    item.displayName ||
+                    item.filename ||
+                    item.label ||
+                    item.folder_name ||
+                    item.file_name ||
+                    item.tenThuMuc ||
+                    item.tenTep ||
+                    item.text ||
+                    item.value ||
+                    "Không có tên"
+                );
+            }
+
+            return "Không có tên";
+        }
+
+        function renderLoading(targetEl, text = "Đang tải dữ liệu...") {
+            targetEl.innerHTML = `
+                <div class="loading-wrap">
+                    <div class="loading-spinner"></div>
+                    <span>${escapeHtml(text)}</span>
+                </div>
+            `;
+        }
+
+        function renderBreadcrumb() {
+            const breadcrumb = document.getElementById("breadcrumb-container");
+            if (!breadcrumb) return;
+
+            let html = `<span style="cursor:pointer; color:#b40018; font-weight:700;" onclick="loadRootFoldersEnhanced()">Thư mục gốc</span>`;
+
+            currentFolderStack.forEach((item, index) => {
+                html += `<span style="color:#999;">›</span>`;
+                html += `<span style="cursor:pointer; color:#1a73e8;" onclick="goToBreadcrumbLevel(${index})">${escapeHtml(item.name)}</span>`;
+            });
+
+            breadcrumb.innerHTML = html;
+        }
+
+        function goToBreadcrumbLevel(index) {
+            if (index < 0) {
+                loadRootFoldersEnhanced();
+                return;
+            }
+
+            const target = currentFolderStack[index];
+            currentFolderStack = currentFolderStack.slice(0, index + 1);
+            currentFolderLevel = index + 1;
+
+            if (currentFolderLevel === 1) {
+                loadChildFoldersEnhanced(target.id, target.name);
+            } else if (currentFolderLevel === 2) {
+                loadImageFoldersEnhanced(target.id, target.name);
+            } else if (currentFolderLevel === 3) {
+                loadImagesEnhanced(target.id, target.name);
+            }
+        }
+
+        function createFolderCard(folder, onClickFnName, color = "#b40018") {
+            const folderName = getDriveItemName(folder);
+            const folderId = folder?.id || "";
+
+            return `
+                <div
+                    onclick="${onClickFnName}('${escapeHtml(folderId)}', '${escapeHtml(folderName)}')"
+                    style="
+                        background:#fff;
+                        border:1px solid #e3e6ea;
+                        border-radius:14px;
+                        padding:16px;
+                        cursor:pointer;
+                        transition:all 0.2s ease;
+                        box-shadow:0 2px 8px rgba(0,0,0,0.04);
+                    "
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 14px rgba(0,0,0,0.08)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'"
+                >
+                    <div style="font-size:30px; margin-bottom:10px;">📁</div>
+                    <div style="font-size:14px; font-weight:700; color:#1f2937; line-height:1.5; word-break:break-word;">
+                        ${escapeHtml(folderName)}
+                    </div>
+                    <div style="margin-top:10px; font-size:12px; color:${color}; font-weight:600;">
+                        Bấm để mở
+                    </div>
+                </div>
+            `;
+        }
+
+        function createImageCard(file) {
+            const imageSrc = file.thumb || file.original || "";
+            const fileName = getDriveItemName(file);
+
+            return `
+                <div style="
+                    border:1px solid #ddd;
+                    border-radius:12px;
+                    padding:10px;
+                    background:#fff;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+                ">
+                    <img
+                        src="${imageSrc}"
+                        style="
+                            width:100%;
+                            height:160px;
+                            object-fit:cover;
+                            border-radius:8px;
+                            cursor:pointer;
+                            background:#f3f4f6;
+                        "
+                        onclick="openImageModal('${file.original || imageSrc}')"
+                    >
+                    <div style="
+                        margin-top:8px;
+                        font-size:12px;
+                        color:#333;
+                        overflow:hidden;
+                        text-overflow:ellipsis;
+                        white-space:nowrap;
+                    ">
+                        ${escapeHtml(fileName)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadRootFoldersEnhanced() {
+            const folderArea = document.getElementById("folder-display-area");
+            const photoArea = document.getElementById("photo-display-area");
+
+            if (!folderArea || !photoArea) return;
+
+            currentFolderStack = [];
+            currentFolderLevel = 0;
+            renderBreadcrumb();
+
+            renderLoading(folderArea, "Đang tải thư mục gốc...");
+            photoArea.innerHTML = "";
+
+            safeGetJson(GOOGLE_WEB_APP_URL + "?action=lay_thu_muc&link=" + ID_THU_MUC_GOC)
+                .then(folders => {
+                    if (folders.error) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Lỗi: ${escapeHtml(folders.error)}</div>`;
+                        return;
+                    }
+
+                    if (!Array.isArray(folders) || folders.length === 0) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; text-align:center;">Chưa có thư mục nào trong thư mục gốc.</div>`;
+                        return;
+                    }
+
+                    folderArea.innerHTML = folders.map(folder => createFolderCard(folder, "openLevel1Folder")).join("");
+                })
+                .catch(error => {
+                    console.error("Lỗi tải thư mục gốc:", error);
+                    folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Không tải được dữ liệu thư mục gốc.<br><span style="font-size:12px; color:#666;">${escapeHtml(error.message || "Lỗi không xác định")}</span></div>`;
+                });
+        }
+
+        function openLevel1Folder(folderId, folderName) {
+            currentFolderStack = [{ id: folderId, name: folderName }];
+            currentFolderLevel = 1;
+            renderBreadcrumb();
+            loadChildFoldersEnhanced(folderId, folderName);
+        }
+
+        function loadChildFoldersEnhanced(parentFolderId, parentFolderName) {
+            const folderArea = document.getElementById("folder-display-area");
+            const photoArea = document.getElementById("photo-display-area");
+
+            renderLoading(folderArea, "Đang tải thư mục con...");
+            photoArea.innerHTML = "";
+
+            safeGetJson(GOOGLE_WEB_APP_URL + "?action=lay_thu_muc&link=" + parentFolderId)
+                .then(folders => {
+                    if (folders.error) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Lỗi: ${escapeHtml(folders.error)}</div>`;
+                        return;
+                    }
+
+                    if (!Array.isArray(folders) || folders.length === 0) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; text-align:center;">Không có thư mục con trong mục này.</div>`;
+                        return;
+                    }
+
+                    folderArea.innerHTML = folders.map(folder => createFolderCard(folder, "openLevel2Folder", "#0b3c6d")).join("");
+                })
+                .catch(error => {
+                    console.error(error);
+                    folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Không tải được thư mục cấp 2.</div>`;
+                });
+        }
+
+        function openLevel2Folder(folderId, folderName) {
+            currentFolderStack = [currentFolderStack[0], { id: folderId, name: folderName }];
+            currentFolderLevel = 2;
+            renderBreadcrumb();
+            loadImageFoldersEnhanced(folderId, folderName);
+        }
+
+        function loadImageFoldersEnhanced(parentFolderId, parentFolderName) {
+            const folderArea = document.getElementById("folder-display-area");
+            const photoArea = document.getElementById("photo-display-area");
+
+            renderLoading(folderArea, "Đang tải thư mục ảnh...");
+            photoArea.innerHTML = "";
+
+            safeGetJson(GOOGLE_WEB_APP_URL + "?action=lay_thu_muc&link=" + parentFolderId)
+                .then(folders => {
+                    if (folders.error) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Lỗi: ${escapeHtml(folders.error)}</div>`;
+                        return;
+                    }
+
+                    if (!Array.isArray(folders) || folders.length === 0) {
+                        folderArea.innerHTML = `<div style="grid-column:1/-1; text-align:center;">Không có thư mục Ảnh trước / Ảnh sau.</div>`;
+                        return;
+                    }
+
+                    folderArea.innerHTML = folders.map(folder => createFolderCard(folder, "openLevel3Folder", "#198754")).join("");
+                })
+                .catch(error => {
+                    console.error(error);
+                    folderArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Không tải được thư mục ảnh.</div>`;
+                });
+        }
+
+        function openLevel3Folder(folderId, folderName) {
+            currentFolderStack = [currentFolderStack[0], currentFolderStack[1], { id: folderId, name: folderName }];
+            currentFolderLevel = 3;
+            renderBreadcrumb();
+            loadImagesEnhanced(folderId, folderName);
+        }
+
+        function loadImagesEnhanced(folderId, folderName) {
+            const folderArea = document.getElementById("folder-display-area");
+            const photoArea = document.getElementById("photo-display-area");
+
+            folderArea.innerHTML = `
+                <div style="
+                    grid-column:1/-1;
+                    background:#f8f9fa;
+                    border:1px solid #dee2e6;
+                    border-radius:10px;
+                    padding:12px 14px;
+                    font-weight:700;
+                    color:#0b3c6d;
+                ">
+                    Đang xem: ${escapeHtml(folderName)}
+                </div>
+            `;
+
+            renderLoading(photoArea, "Đang tải ảnh...");
+
+            safeGetJson(GOOGLE_WEB_APP_URL + "?action=lay_anh&link=" + folderId)
+                .then(files => {
+                    if (files.error) {
+                        photoArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Lỗi: ${escapeHtml(files.error)}</div>`;
+                        return;
+                    }
+
+                    if (!Array.isArray(files) || files.length === 0) {
+                        photoArea.innerHTML = `<div style="grid-column:1/-1; text-align:center;">Không có ảnh trong thư mục này.</div>`;
+                        return;
+                    }
+
+                    photoArea.innerHTML = files.map(file => createImageCard(file)).join("");
+                })
+                .catch(error => {
+                    console.error(error);
+                    photoArea.innerHTML = `<div style="grid-column:1/-1; color:red; text-align:center;">❌ Không tải được ảnh.</div>`;
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const labSelect = document.getElementById("labSelect");
+            if (labSelect) {
+                labSelect.addEventListener("change", function () {
+                    loadCalendarByLab(this.value);
+                });
+            }
+
+            const savedEmail = sessionStorage.getItem("lab_user_email");
+            if (savedEmail && allowedEmails.includes(savedEmail)) {
+                openDashboard(savedEmail);
+            } else {
+                document.getElementById("screen-login").classList.remove("hidden");
+            }
+        });
+    </script>
+
+    <footer class="footer-vlu">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-title">KHOA KỸ THUẬT VÀ QUẢN LÝ CÔNG NGHIỆP</div>
+                <div class="footer-text">
+                    📞 028.71098.256 (4340) | k.iem@vlu.edu.vn<br>
+                    📍 Văn phòng: Tòa A.05 – 69/68 Đặng Thùy Trâm, P. Bình Lợi Trung, TP. HCM<br>
+                    Hệ thống phòng Lab: CS2 – 233A Phan Văn Trị, P. Bình Lợi Trung, TP. HCM
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <div class="footer-title">TRƯỜNG ĐẠI HỌC VĂN LANG</div>
+                <div class="footer-text">
+                    📍 Cơ sở 1: 45 Nguyễn Khắc Nhu, P. Cầu Ông Lãnh, TP. HCM<br>
+                    📍 Cơ sở 2: 233A Phan Văn Trị, P. Bình Lợi Trung, TP. HCM<br>
+                    📍 Cơ sở 3: 69/68 Đặng Thùy Trâm, P. Bình Lợi Trung, TP. HCM<br>
+                    📍 Ký túc xá: 160/63A Bến Vân Đồn, Q.4, TP. HCM
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-btn">&times;</span>
+        <img id="modalImg" class="modal-content">
+    </div>
+</body>
+</html>
